@@ -212,11 +212,18 @@ hold on;
 
 % plot the bars themselves
 for grp=1:N_grps
+    %hb(grp)=bar( ...
+        %(grp:N_grps:N_bars*N_grps-(N_grps-grp))-bar_shift(grp), ... % this is the x position for each bar
+        %bar_input(grp,:),  ... % this is the y position for each bar
+        %bar_width/N_grps, ... % this is the width of each bar
+        %'FaceColor',bar_colors(grp,:), ... % color parameter
+        %optional_bar_arguments{:}); % extra parameters
+		color = (grp - 1) * 1.0 / (N_grps - 1);
     hb(grp)=bar( ...
         (grp:N_grps:N_bars*N_grps-(N_grps-grp))-bar_shift(grp), ... % this is the x position for each bar
         bar_input(grp,:),  ... % this is the y position for each bar
         bar_width/N_grps, ... % this is the width of each bar
-        'FaceColor',bar_colors(grp,:), ... % color parameter
+        'FaceColor', [ color, color, color ], ... % color parameter
         optional_bar_arguments{:}); % extra parameters
 end
 
