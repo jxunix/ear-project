@@ -7,7 +7,7 @@
 %
 
 %% preprocessing
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws2.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -79,7 +79,7 @@ for fold = 1:num_folds
 	end
 end
 
-save('./svm.mat');
+save('../../results/intermediate.mat');
 
 %% draw the bar plot
 test_errs = test_errs * 100;
@@ -109,5 +109,5 @@ test_std = std(test_acc, 0, 2);
 svm_train_std = train_std(idx);
 svm_test_std = test_std(idx);
 
-ws_fname = '../../results/svm_own_ws.mat';
+ws_fname = '../../results/svm_own_ws2.mat';
 save(ws_fname);

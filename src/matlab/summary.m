@@ -6,11 +6,11 @@
 % Description: This script summarize all the recognition rates.
 %
 
-%clear; close all; symmetry_test_asm
-%clear; close all; knn
-%clear; close all; flda
-%clear; close all; svm
-%clear; close all; svm_interface
+clear; close all; symmetry_test_asm
+clear; close all; knn
+clear; close all; flda
+clear; close all; svm
+clear; close all; svm_interface
 
 clear; close all;
 
@@ -98,7 +98,6 @@ errorbar_groups(means', stds', ...
 	'bar_width', 0.75, ...
 	'errorbar_width', 0.5, ...
 	'bar_names', {'Training', 'Test'});
-%set(gca, 'XTickLabel', { 'KNN', 'FLDA', 'SVM' });
 ylabel('Recognition Rate %');
 title('Comparison of Feature Classification Methods');
 legend('KNN', 'FLDA', 'ASM (libsvm)');
