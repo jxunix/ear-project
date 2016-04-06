@@ -75,4 +75,4 @@ for i = 1:length(descriptors)
 	end
 end
 
-save('./sift.mat');
+save('../../results/sift.mat');
