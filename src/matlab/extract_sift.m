@@ -42,7 +42,7 @@ end
 
 %%
 dname = '../../outputs/4_flipped/';
-fnames = dir(pt_dname);
+fnames = dir(dname);
 fnames = {fnames(3:end).name}';
 
 % extract SIFT features from the images
