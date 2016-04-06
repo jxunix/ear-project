@@ -6,7 +6,7 @@
 % Description: This script is to implement multi-class SVM.
 %
 
-function [ y_pred, train_err ] = svm_multi(X_train, y_train, X_test, label_train, classes, rindex_train, rindex_test, penalize, lambda)
+function [ y_pred, y_pred_debug, y_prob, train_err ] = svm_multi(X_train, y_train, X_test, label_train, classes, rindex_train, rindex_test, penalize, lambda)
 
 if nargin < 9
 	lambda = -1;
@@ -37,3 +37,6 @@ train_err = mean(y_pred_tr ~= y_train);
 
 [ ~, y_pred_tt ] = max(y_probs_tt, [], 2);
 y_pred = y_pred_tt;
+
+y_pred_debug = y_preds_tt;
+y_prob = y_probs_tt;

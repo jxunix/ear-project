@@ -7,7 +7,7 @@
 %
 
 %% preprocessing
-load('work_space.mat', 'M', 'names');
+load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -49,8 +49,8 @@ num_folds = 10;
 log2lambdas = [-6:1:2];
 lambdas = 10 .^ log2lambdas;
 
-train_errs = zeros(num_folds, length(lambdas) + 1);
-test_errs = zeros(num_folds, length(lambdas) + 1);
+train_errs = zeros(length(lambdas) + 1, num_folds);
+test_errs = zeros(length(lambdas) + 1, num_folds);
 
 for fold = 1:num_folds
 %fold = 1;
@@ -67,15 +67,15 @@ for fold = 1:num_folds
 	y_test = y(test_id);
 	rindex_test = rindex(test_id);
 
-	[ y_pred, train_err ] = svm_multi(X_train, y_train, X_test, label_train, id, rindex_train, rindex_test, 0);
-	train_errs(fold, 1) = train_err;
-	test_errs(fold, 1) = mean(y_pred ~= y_test);
+	[ y_pred, y_pred_debug, y_prob, train_err ] = svm_multi(X_train, y_train, X_test, label_train, id, rindex_train, rindex_test, 0);
+	train_errs(1, fold) = train_err;
+	test_errs(1, fold) = mean(y_pred ~= y_test);
 
 	for i = 1:length(lambdas)
 		lambda = lambdas(i);
-		[ y_pred, train_err ] = svm_multi(X_train, y_train, X_test, label_train, id, rindex_train, rindex_test, 1, lambda);
-		train_errs(fold, i+1) = train_err;
-		test_errs(fold, i+1) = mean(y_pred ~= y_test);
+		[ y_pred, y_pred_debug, y_prob, train_err ] = svm_multi(X_train, y_train, X_test, label_train, id, rindex_train, rindex_test, 1, lambda);
+		train_errs(i+1, fold) = train_err;
+		test_errs(i+1, fold) = mean(y_pred ~= y_test);
 	end
 end
 
@@ -95,8 +95,19 @@ hold off
 outname = '../../results/svm_penalized_error.png';
 print(outname, '-dpng')
 
-rr_fname = './recognition_rate.mat';
-svm_train_own = 100 - min(mean(train_errs), [], 2);
-svm_test_own = 100 - min(mean(test_errs), [], 2);
-save(rr_fname, 'svm_train_own', '-append');
-save(rr_fname, 'svm_test_own', '-append');
+train_acc = (1 - train_errs) * 100;
+test_acc = (1 - test_errs) * 100;
+
+[ val, idx ] = max(mean(train_acc, 2));
+mean_test_acc = mean(test_acc, 2);
+
+svm_train = val;
+svm_test = mean_test_acc(idx);
+
+train_std = std(train_acc, 0, 2);
+test_std = std(test_acc, 0, 2);
+svm_train_std = train_std(idx);
+svm_test_std = test_std(idx);
+
+ws_fname = '../../results/svm_own_ws.mat';
+save(ws_fname);

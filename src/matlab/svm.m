@@ -10,7 +10,7 @@
 % use libsvm package
 addpath(fullfile(pwd, 'libsvm'));
 
-load('work_space.mat', 'M', 'names');
+load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -42,57 +42,51 @@ y = y(rindex, :);
 num_folds = 10;
 [ trainfolds, testfolds ] = kfold(rows, num_folds);
 
-fold = 1;
-train_id = trainfolds{fold};
-test_id = testfolds{fold};
-
-X_train = X(train_id, :);
-y_train = y(train_id);
-X_test = X(test_id, :);
-y_test = y(test_id);
-
 [ log2c, log2g ] = meshgrid(-10:10, -10:10);
-cv_acc = zeros(numel(log2c), 1);
+train_acc = zeros(numel(log2c), num_folds);
+test_acc = zeros(numel(log2c), num_folds);
 
-for i = 1:numel(log2c)
-	% train SVM with RBF kernel
-	% -s 0: learn classification SVM
-	% -t 2: use Gaussian kernel
-	% -g  : specify bandwidth
-	% -v  : do cross-validation
-	% -q  : suppress console output
-	libsvm_options = sprintf('-s 0 -t 2 -c %g -g %g -v %d -q', ...
-		2^log2c(i), 2^log2g(i), 5);
-	cv_acc(i) = svmtrain(y_train, X_train, libsvm_options);
+for fold = 1:num_folds
+	%fold = 1;
+	train_id = trainfolds{fold};
+	test_id = testfolds{fold};
+
+	X_train = X(train_id, :);
+	y_train = y(train_id);
+	X_test = X(test_id, :);
+	y_test = y(test_id);
+
+	for i = 1:numel(log2c)
+		% train SVM with RBF kernel
+		% -s 0: learn classification SVM
+		% -t 2: use Gaussian kernel
+		% -c  : set the parameter C for cost
+		% -g  : specify bandwidth
+		% -q  : suppress console output
+		libsvm_options = sprintf('-s 0 -t 2 -c %g -g %g -q', 2^log2c(i), 2^log2g(i));
+		model = svmtrain(y_train, X_train, libsvm_options);
+
+		[ y_pred_tr, ~, ~ ] = svmpredict(y_train, X_train, model);
+		train_acc(i, fold) = 100 * mean(y_pred_tr == y_train);
+
+		[ y_pred_tt, ~, ~ ] = svmpredict(y_test, X_test, model);
+		test_acc(i, fold) = 100 * mean(y_pred_tt == y_test);
+	end
 end
 
-[ val, idx ] = max(cv_acc);
-fprintf('Best training accuracy: %0.1g%% when C=2^%d, gamma=2^%d.\n', val, log2c(idx), log2g(idx));
+[ val, idx ] = max(mean(train_acc, 2));
+mean_test_acc = mean(test_acc, 2);
 
-%% plot
-contour(log2c, log2g, reshape(cv_acc, size(log2c)));
-colorbar, hold on
-plot(log2c(idx), log2g(idx), 'rx')
-text(log2c(idx), log2g(idx), sprintf('Accuracy=%.1f%%', cv_acc(idx)), ...
-  'HorizontalAlign', 'left', 'VerticalAlign', 'top');
-xlabel('log_2(C)'), ylabel('log_2(\gamma)')
-title('10-fold Cross Validation Accuracy vs log_2(C) and log_2(\gamma)')
-
-outname = '../../results/svm_acc.png';
-print(outname, '-dpng')
-
-%% train RBF SVM w/ best parameters
-libsvm_options = sprintf('-s 0 -t 2 -c %g -g %g -q', 2^log2c(idx), 2^log2g(idx));
-model = svmtrain(y_train, X_train, libsvm_options);
-
-% test
-y_pred = svmpredict(y_test, X_test, model);
-test_acc = 100 * mean(y_pred == y_test);
-
-fprintf('The corresponding test accuracy: %0.1g%%.\n', test_acc);
-
-rr_fname = './recognition_rate.mat';
 svm_train = val;
-svm_test = test_acc;
-save(rr_fname, 'svm_train', '-append');
-save(rr_fname, 'svm_test', '-append');
+svm_test = mean_test_acc(idx);
+
+fprintf('Best training accuracy: %0.1g%% when C=2^%d, gamma=2^%d.\n', val, log2c(idx), log2g(idx));
+fprintf('The corresponding test accuracy: %0.1g%%.\n', svm_test);
+
+train_std = std(train_acc, 0, 2);
+test_std = std(test_acc, 0, 2);
+svm_train_std = train_std(idx);
+svm_test_std = test_std(idx);
+
+ws_fname = '../../results/svm_ws.mat';
+save(ws_fname);

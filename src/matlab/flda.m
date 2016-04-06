@@ -7,7 +7,7 @@
 %		Discriminant Linear Analysis.
 %
 
-load('work_space.mat', 'M', 'names');
+load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -108,19 +108,18 @@ outname = '../../results/flda_acc.png';
 print(outname, '-dpng')
 
 [ best_acc, best_idx ] = max(mean(train_acc, 2));
-fprintf('Best training accuracy: %0.1g%%, by %d-D projection.\n', best_acc, best_idx);
 mean_test_acc = mean(test_acc, 2);
-fprintf('The corresponding test accuracy: %0.1g%%.\n', mean_test_acc(best_idx));
 
-rr_fname = './recognition_rate.mat';
 flda_train = best_acc;
 flda_test = mean_test_acc(best_idx);
+
 train_std = std(train_acc, 0, 2);
 test_std = std(test_acc, 0, 2);
 flda_train_std = train_std(best_idx);
 flda_test_std = test_std(best_idx);
 
-save(rr_fname, 'flda_train', '-append');
-save(rr_fname, 'flda_test', '-append');
-save(rr_fname, 'flda_train_std', '-append');
-save(rr_fname, 'flda_test_std', '-append');
+fprintf('Best training accuracy: %0.1g%%, by %d-D projection.\n', flda_train, best_idx);
+fprintf('The corresponding test accuracy: %0.1g%%.\n', flda_test);
+
+ws_fname = '../../results/flda_ws.mat';
+save(ws_fname);

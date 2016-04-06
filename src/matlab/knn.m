@@ -6,7 +6,7 @@
 % Description: This script is to classify the feature vectors by applying KNN.
 %
 
-load('work_space.mat', 'M', 'names');
+load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -56,7 +56,6 @@ end
 % plot cross validation accuracy against K
 acc = 100 - err;
 errorbar(Ks, mean(acc, 2), std(acc, 0, 2), '-ok');
-%grid
 xlabel('K')
 ylabel('Accuracy %')
 title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
@@ -64,13 +63,12 @@ title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
 outname = '../../results/knn_acc.png';
 print(outname, '-dpng')
 
-[ mini, index ] = max(mean(acc, 2));
-fprintf('Best accuracy is %0.1f%% when K=%d.\n', mini, index)
+[ val, idx ] = max(mean(acc, 2));
+fprintf('Best accuracy is %0.1f%% when K=%d.\n', val, idx)
 
-rr_fname = './recognition_rate.mat';
-knn_test = mini;
+knn_test = val;
 stdev = std(acc, 0, 2);
-knn_test_std = stdev(index);
+knn_test_std = stdev(idx);
 
-save(rr_fname, 'knn_test');
-save(rr_fname, 'knn_test_std', '-append');
+ws_fname = '../../results/knn_ws.mat';
+save(ws_fname);

@@ -203,4 +203,5 @@ hold off
 outname = '../../results/symmetry_test_next_visit.png';
 print(outname, '-dpng')
 
-save('./work_space.mat');
+ws_fname = '../../results/symmetry_test_ws.mat';
+save(ws_fname);
