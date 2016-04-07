@@ -6,11 +6,11 @@
 % Description: This script summarize all the recognition rates.
 %
 
-%clear; close all; symmetry_test_asm
-%clear; close all; knn
-%clear; close all; flda
-%clear; close all; svm
-%clear; close all; svm_interface
+clear; close all; symmetry_test_asm
+clear; close all; knn
+clear; close all; flda
+clear; close all; svm
+clear; close all; svm_interface
 
 clear; close all;
 
