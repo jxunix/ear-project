@@ -79,24 +79,22 @@ for fold = 1:num_folds
 	end
 end
 
-save('./svm.mat');
-
 %% draw the bar plot
 test_errs = test_errs * 100;
-bar(mean(test_errs), 'FaceColor', [ 0.5,0.5,0.5 ]);
+bar(mean(test_errs, 2), 'FaceColor', [ 0.5,0.5,0.5 ]);
 set(gca, 'XTickLabel', { '0', '10^-6', '10^-5', '10^-4', '10^-3', '10^-2', '10^-1', '1', '10', '10^2' })
 xlabel('\lambda')
 ylabel('Test Error %')
 title('10-fold Cross Validation Error vs \lambda')
 hold on
-errorbar(mean(test_errs), std(test_errs), '.k');
+errorbar(mean(test_errs, 2), std(test_errs, 0, 2), '.k');
 hold off
 
 outname = '../../results/svm_penalized_error.png';
 print(outname, '-dpng')
 
 train_acc = (1 - train_errs) * 100;
-test_acc = (1 - test_errs) * 100;
+test_acc = 100 - test_errs;
 
 [ val, idx ] = max(mean(train_acc, 2));
 mean_test_acc = mean(test_acc, 2);
