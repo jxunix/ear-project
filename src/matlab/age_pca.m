@@ -23,11 +23,6 @@ for i = 1:rows
 	y(i) = id;
 end
 
-%% randomize
-%rindex = randperm(rows);
-%X = X(rindex, :);
-%y = y(rindex, :);
-
 X_v3l1_idx = ~cellfun('isempty', strfind(names, '-visit3-l1'));
 X_v3l2_idx = find(X_v3l1_idx) + 1;
 X_v3r1_idx = X_v3l2_idx + 1;
