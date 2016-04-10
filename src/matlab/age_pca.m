@@ -9,7 +9,7 @@
 clear; clc; close all;
 load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
-% clean the predictor X and response y
+%% clean the predictor X and response y
 [ rows, cols ] = size(M);
 X = reshape(M', cols*2, rows/2)';
 [ rows, cols ] = size(X);
