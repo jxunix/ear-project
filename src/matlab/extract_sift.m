@@ -6,73 +6,44 @@
 % Description: This script is to extract SIFT features from ear images.
 %
 
+clear; close all; clc;
+
 run('../../../vlfeat-0.9.20/toolbox/vl_setup.m')
 vl_version verbose
 
-%%
-crv_fname = '../../asm/models/ear_99pts.crvs';
-crvs = textread(crv_fname, '%s', 'delimiter', '\n');
-crv = crvs{2};
-crv = strsplit(crv, ' ');
-crv = crv(9:44);
-polyline = zeros(length(crv), 1);
-for i = 1:length(crv)
-	polyline(i) = str2num(crv{i});
-end
-
-%%
-pt_dname = '../../asm/points_99/';
-pt_fnames = dir(pt_dname);
-pt_fnames = {pt_fnames(3:end).name}';
-xv = zeros(length(pt_fnames), length(polyline));
-yv = zeros(length(pt_fnames), length(polyline));
-
-for i = 1:length(pt_fnames)
-	f = strcat(pt_dname, pt_fnames{i});
-	pts = textread(f, '%s', 'delimiter', '\n');
-	pts = pts(4:end-1);
-	pts = pts(polyline + 1);
-	for j = 1:length(polyline)
-		pt = pts{j};
-		pt = strsplit(pt, ' ');
-		xv(i, j) = str2num(pt{1});
-		yv(i, j) = str2num(pt{2});
-	end
-end
-
-%%
+%load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_manual.mat', 'M', 'names');
 dname = '../../outputs/4_flipped/';
-fnames = dir(dname);
-fnames = {fnames(3:end).name}';
+[ rows, cols ] = size(M);
 
-% extract SIFT features from the images
-descriptors = cell(length(fnames), 1);
-for i = 1:length(fnames)
-	fname = strcat(dname, fnames{i});
-	fprintf('%d: %s\n', i, fname);
+D = zeros(rows / 2 * 128, cols);
+for i = 1:length(names)
+%i = 1;
+	fname = names{i};
+	fname = strcat(dname, fname(1:14), 'jpg');
+	fprintf('Processing image %s.\n', fname)
+
 	I = imread(fname);
-	%I = imresize(I, 0.1);
 	I = single(rgb2gray(I));
 
-	[ f d ] = vl_sift(I);
-	in = inpolygon(f(1,:), f(2,:), xv(i,:), yv(i,:));
-	d = d(:, in);
-	descriptors{i} = { d };
-end
-
-%% compute pair-wise distances
-dists = zeros(length(fnames));
-num_pts = 50;
-
-for i = 1:length(descriptors)
-	for j = 1:length(descriptors)
-	%i=1;j=2;
-		fprintf('i=%d, j=%d: %s vs %s\n', i, j, fnames{i}, fnames{j});
-
-		[ matches, scores ] = vl_ubcmatch(descriptors{i}, descriptors{j});
-		scores = sort(scores, 'descend');
-		dists(1, i) = sum(scores(1:num_pts), 2);
+	coord = M(2*i-1:2*i, :);
+	scale = repmat(32, 1, cols);
+	angle = repmat(0, 1, cols);
+	keypt = [ coord; scale; angle ];
+	[ f,d ] = vl_sift(I, 'frames', keypt, 'orientations');
+    
+	dup_flag = zeros(1, size(f,2));
+	dup_flag(1) = 1;
+	for j = 2:size(f,2)
+		if f(1,j) ~= f(1, j-1)
+			dup_flag(j) = 1;
+		end
 	end
+	D(128 * i - 127:128 * i,:) = d(:, logical(dup_flag));
 end
 
-save('../../results/sift.mat');
+X = reshape(M', cols*2, rows/2)';
+D = reshape(D', cols * 128, rows/2)';
+X = [ X D ];
+
+save('../../results/extract_sift_ws.mat');
