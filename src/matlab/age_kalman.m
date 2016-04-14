@@ -49,7 +49,8 @@ for j = 1:3
 	Xk = A * Xk_1;
 	Pk = A * Pk_1 * A' + Q;
 
-	Kk = (H * Pk * H' + R) \ (Pk * H');
+	% mistake
+	%Kk = (H * Pk * H' + R) \ (Pk * H');
 	Xk = Xk + Kk * (Xi(j,:) - H * Xk);
 	Pk = (eye(rows) - Kk * H) * Pk;
 
