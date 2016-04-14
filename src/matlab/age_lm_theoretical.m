@@ -8,7 +8,7 @@
 %
 
 clear; close all; clc;
-load('../../results/symmetry_test_ws_manual.mat', 'M', 'names');
+load('../../results/symmetry_test_ws.mat', 'M', 'names');
 
 %% clean the predictor X and response class
 [ rows, cols ] = size(M);
@@ -113,6 +113,9 @@ xlabel('K')
 ylabel('Accuracy %')
 title('Accuracy vs. K');
 legend('Adjusted', 'Unadjusted');
+
+outname = '../../results/theoretical_improvement_adjusted.png';
+print(outname, '-dpng')
 
 [ val, idx ] = max(acc);
 fprintf('Best accuracy w/ correcting for growth is %0.1f%% when K=%d.\n', val, idx)
