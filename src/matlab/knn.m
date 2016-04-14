@@ -7,6 +7,9 @@
 %
 
 load('../../results/symmetry_test_ws.mat', 'M', 'names');
+if add_pixel
+	load('../../results/extract_pixel_ws.mat', 'rgbs');
+end
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -29,6 +32,12 @@ y = y(rindex, :);
 
 % precompute entire pairwise distance matrix
 dists = pdist2(X, X);
+
+if add_pixel
+	eta = 0.1;
+	dists_rgb = pdist2(rgbs, rgbs);
+	dists_rgb = dists .^ 2 + eta * dists_rgb .^ 2;
+end
 
 % 10-fold cross validation for KNN
 num_folds = 10;
