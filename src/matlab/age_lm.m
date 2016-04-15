@@ -76,50 +76,50 @@ end
 ID = names(X3_idx);
 
 %%
-%for i = 1:size(X3, 1)
-	%x1 = X1(i,:);
-	%x2 = X2(i,:);
-	%x3 = X3(i,:);
+for i = 1:size(X3, 1)
+	x1 = X1(i,:);
+	x2 = X2(i,:);
+	x3 = X3(i,:);
 
-	%x2_pred = [ 1 x1 ] * w;
-	%x3_pred = [ 1 x2 ] * w;
+	x2_pred = [ 1 x1 ] * w;
+	x3_pred = [ 1 x2 ] * w;
 
-	%a = subplot(1,2,1);
-	%h1 = plot(x1(1, c1), -x1(1, 99 + c1), 'ro-');
-	%hold on
-	%plot(x1(1, c2), -x1(1, 99 + c2), 'ro-');
-	%plot(x1(1, c3), -x1(1, 99 + c3), 'ro-');
-	%h2 = plot(x2(1, c1), -x2(1, 99 + c1), 'go-');
-	%plot(x2(1, c2), -x2(1, 99 + c2), 'go-');
-	%plot(x2(1, c3), -x2(1, 99 + c3), 'go-');
-	%h3 = plot(x3(1, c1), -x3(1, 99 + c1), 'bo-');
-	%plot(x3(1, c2), -x3(1, 99 + c2), 'bo-');
-	%plot(x3(1, c3), -x3(1, 99 + c3), 'bo-');
-	%legend([ h1, h2, h3 ], 'visit1', 'visit2', 'visit3');
-	%hold off
+	a = subplot(1,2,1);
+	h1 = plot(x1(1, c1), -x1(1, 99 + c1), 'ro-');
+	hold on
+	plot(x1(1, c2), -x1(1, 99 + c2), 'ro-');
+	plot(x1(1, c3), -x1(1, 99 + c3), 'ro-');
+	h2 = plot(x2(1, c1), -x2(1, 99 + c1), 'go-');
+	plot(x2(1, c2), -x2(1, 99 + c2), 'go-');
+	plot(x2(1, c3), -x2(1, 99 + c3), 'go-');
+	h3 = plot(x3(1, c1), -x3(1, 99 + c1), 'bo-');
+	plot(x3(1, c2), -x3(1, 99 + c2), 'bo-');
+	plot(x3(1, c3), -x3(1, 99 + c3), 'bo-');
+	legend([ h1, h2, h3 ], 'visit1', 'visit2', 'visit3');
+	hold off
 
-	%b = subplot(1,2,2);
-	%h1 = plot(x1(1, c1), -x1(1, 99 + c1), 'ro-');
-	%hold on
-	%plot(x1(1, c2), -x1(1, 99 + c2), 'ro-');
-	%plot(x1(1, c3), -x1(1, 99 + c3), 'ro-');
-	%h2 = plot(x2_pred(1, c1), -x2_pred(1, 99 + c1), 'go-');
-	%plot(x2_pred(1, c2), -x2_pred(1, 99 + c2), 'go-');
-	%plot(x2_pred(1, c3), -x2_pred(1, 99 + c3), 'go-');
-	%h3 = plot(x3_pred(1, c1), -x3_pred(1, 99 + c1), 'bo-');
-	%plot(x3_pred(1, c2), -x3_pred(1, 99 + c2), 'bo-');
-	%plot(x3_pred(1, c3), -x3_pred(1, 99 + c3), 'bo-');
-	%legend([ h1, h2, h3 ], 'visit1', 'visit2', 'visit3');
-	%hold off
+	b = subplot(1,2,2);
+	h1 = plot(x1(1, c1), -x1(1, 99 + c1), 'ro-');
+	hold on
+	plot(x1(1, c2), -x1(1, 99 + c2), 'ro-');
+	plot(x1(1, c3), -x1(1, 99 + c3), 'ro-');
+	h2 = plot(x2_pred(1, c1), -x2_pred(1, 99 + c1), 'go-');
+	plot(x2_pred(1, c2), -x2_pred(1, 99 + c2), 'go-');
+	plot(x2_pred(1, c3), -x2_pred(1, 99 + c3), 'go-');
+	h3 = plot(x3_pred(1, c1), -x3_pred(1, 99 + c1), 'bo-');
+	plot(x3_pred(1, c2), -x3_pred(1, 99 + c2), 'bo-');
+	plot(x3_pred(1, c3), -x3_pred(1, 99 + c3), 'bo-');
+	legend([ h1, h2, h3 ], 'visit1', 'visit2', 'visit3');
+	hold off
 
-	%id = ID{i};
-	%title(a, sprintf('True Ear Shapes of %s\n', id(1:3)));
-	%title(b, sprintf('Predicted Ear Shapes of %s\n', id(1:3)));
+	id = ID{i};
+	title(a, sprintf('True Ear Shapes of %s\n', id(1:3)));
+	title(b, sprintf('Predicted Ear Shapes of %s\n', id(1:3)));
 
-	%while waitforbuttonpress ~= 0
-		%pause(0.1);
-	%end
-%end
+	while waitforbuttonpress ~= 0
+		pause(0.1);
+	end
+end
 
 %%
 y = X2_2;
@@ -128,36 +128,36 @@ Z = [ repmat(1, size(Z,1), 1) Z ];
 w = pinv(Z) * y;
 
 %%
-%for i = 1:size(X3, 1)
-	%x1 = X1(i,:);
-	%x2 = X2(i,:);
-	%x3 = X3(i,:);
+for i = 1:size(X3, 1)
+	x1 = X1(i,:);
+	x2 = X2(i,:);
+	x3 = X3(i,:);
 
-	%x2_pred = [ 1 x1 ] * w;
-	%x3_pred = [ 1 x2 ] * w;
+	x2_pred = [ 1 x1 ] * w;
+	x3_pred = [ 1 x2 ] * w;
 
-	%a = subplot(1,2,1);
-	%plot(x3(1, c1), -x3(1, 99 + c1), 'bo-');
-	%hold on
-	%plot(x3(1, c2), -x3(1, 99 + c2), 'bo-');
-	%plot(x3(1, c3), -x3(1, 99 + c3), 'bo-');
-	%hold off
+	a = subplot(1,2,1);
+	plot(x3(1, c1), -x3(1, 99 + c1), 'bo-');
+	hold on
+	plot(x3(1, c2), -x3(1, 99 + c2), 'bo-');
+	plot(x3(1, c3), -x3(1, 99 + c3), 'bo-');
+	hold off
 
-	%b = subplot(1,2,2);
-	%plot(x3_pred(1, c1), -x3_pred(1, 99 + c1), 'bo-');
-	%hold on
-	%plot(x3_pred(1, c2), -x3_pred(1, 99 + c2), 'bo-');
-	%plot(x3_pred(1, c3), -x3_pred(1, 99 + c3), 'bo-');
-	%hold off
+	b = subplot(1,2,2);
+	plot(x3_pred(1, c1), -x3_pred(1, 99 + c1), 'bo-');
+	hold on
+	plot(x3_pred(1, c2), -x3_pred(1, 99 + c2), 'bo-');
+	plot(x3_pred(1, c3), -x3_pred(1, 99 + c3), 'bo-');
+	hold off
 
-	%id = ID{i};
-	%title(a, sprintf('True Ear Shapes of %s\n at Visit 3', id(1:3)));
-	%title(b, sprintf('Predicted Ear Shapes of %s at Visit 3\n', id(1:3)));
+	id = ID{i};
+	title(a, sprintf('True Ear Shapes of %s\n at Visit 3', id(1:3)));
+	title(b, sprintf('Predicted Ear Shapes of %s at Visit 3\n', id(1:3)));
 
-	%while waitforbuttonpress ~= 0
-		%pause(0.1);
-	%end
-%end
+	while waitforbuttonpress ~= 0
+		pause(0.1);
+	end
+end
 
 %%
 X3_pred = [ repmat(1, size(X2_2, 1), 1) X2_2 ] * w;

@@ -53,30 +53,30 @@ X_v3l2 = X(X_v3l2_idx, :);
 X_v3r1 = X(X_v3r1_idx, :);
 X_v3r2 = X(X_v3r2_idx, :);
 
-X_v1_mean = mean([ X_v1l1; X_v1l2; X_v1r1; X_v1r2 ]);
-X_v2_mean = mean([ X_v2l1; X_v2l2; X_v2r1; X_v2r2 ]);
-X_v3_mean = mean([ X_v3l1; X_v3l2; X_v3r1; X_v3r2 ]);
+%X_v1_mean = mean([ X_v1l1; X_v1l2; X_v1r1; X_v1r2 ]);
+%X_v2_mean = mean([ X_v2l1; X_v2l2; X_v2r1; X_v2r2 ]);
+%X_v3_mean = mean([ X_v3l1; X_v3l2; X_v3r1; X_v3r2 ]);
 
-Z = [ X_v1_mean; X_v2_mean; X_v3_mean ];
+%Z = [ X_v1_mean; X_v2_mean; X_v3_mean ];
 
-%X_v1l1_mean = mean(X_v1l1);
-%X_v1l2_mean = mean(X_v1l2);
-%X_v1r1_mean = mean(X_v1r1);
-%X_v1r2_mean = mean(X_v1r2);
+X_v1l1_mean = mean(X_v1l1);
+X_v1l2_mean = mean(X_v1l2);
+X_v1r1_mean = mean(X_v1r1);
+X_v1r2_mean = mean(X_v1r2);
 
-%X_v2l1_mean = mean(X_v2l1);
-%X_v2l2_mean = mean(X_v2l2);
-%X_v2r1_mean = mean(X_v2r1);
-%X_v2r2_mean = mean(X_v2r2);
+X_v2l1_mean = mean(X_v2l1);
+X_v2l2_mean = mean(X_v2l2);
+X_v2r1_mean = mean(X_v2r1);
+X_v2r2_mean = mean(X_v2r2);
 
-%X_v3l1_mean = mean(X_v3l1);
-%X_v3l2_mean = mean(X_v3l2);
-%X_v3r1_mean = mean(X_v3r1);
-%X_v3r2_mean = mean(X_v3r2);
+X_v3l1_mean = mean(X_v3l1);
+X_v3l2_mean = mean(X_v3l2);
+X_v3r1_mean = mean(X_v3r1);
+X_v3r2_mean = mean(X_v3r2);
 
-%Z = [ X_v1l1_mean; X_v1l2_mean; X_v1r1_mean; X_v1r2_mean; ...
-			%X_v2l1_mean; X_v2l2_mean; X_v2r1_mean; X_v2r2_mean; ...
-			%X_v3l1_mean; X_v3l2_mean; X_v3r1_mean; X_v3r2_mean ];
+Z = [ X_v1l1_mean; X_v1l2_mean; X_v1r1_mean; X_v1r2_mean; ...
+			X_v2l1_mean; X_v2l2_mean; X_v2r1_mean; X_v2r2_mean; ...
+			X_v3l1_mean; X_v3l2_mean; X_v3r1_mean; X_v3r2_mean ];
 
 [ coeff, ~, latent, ~, explained ] = pca(Z);
 
