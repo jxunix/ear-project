@@ -33,51 +33,96 @@ y = y(rindex, :);
 % precompute entire pairwise distance matrix
 dists = pdist2(X, X);
 
-if add_pixel
-	eta = 0.1;
-	dists_rgb = pdist2(rgbs, rgbs);
-	dists_rgb = dists .^ 2 + eta * dists_rgb .^ 2;
-end
-
 % 10-fold cross validation for KNN
 num_folds = 10;
 [ trainfolds, testfolds ] = kfold(rows, num_folds);
 
 Ks = 1:5:rows/2;
-err = zeros(length(Ks), num_folds);
-for K = 1:length(Ks)
-	for fold = 1:num_folds
-		fprintf('K=%d, fold=%d\n', Ks(K), fold);
-		train_id = trainfolds{fold};
-		test_id = testfolds{fold};
 
-		X_train = X(train_id, :);
-		y_train = y(train_id);
-		X_test = X(test_id, :);
-		y_test = y(test_id);
-		ds = dists(train_id, test_id);
+if add_pixel
+	log_eta = -3:3;
+	eta = 10 .^ log_eta;
+	eta = [ 0 eta ];
 
-		y_pred = sol_knn_classify(X_train, y_train, X_test, K, ds);
-		err(K, fold) = 100 * mean(y_pred ~= y_test);
+	dists_rgb = pdist2(rgbs, rgbs);
+	acc_stat = zeros(length(eta), 2);
+	
+	for i = 1:length(eta)
+		fprintf('eta=%0.3g\n', eta(i));
+		dists_sum = sqrt(dists .^ 2 + eta(i) * (dists_rgb .^ 2));
+		acc = zeros(length(Ks), num_folds);
+
+		for K = 1:length(Ks)
+			for fold = 1:num_folds
+				train_id = trainfolds{fold};
+				test_id = testfolds{fold};
+
+				X_train = X(train_id, :);
+				y_train = y(train_id);
+				X_test = X(test_id, :);
+				y_test = y(test_id);
+				ds = dists_sum(train_id, test_id);
+
+				y_pred = sol_knn_classify(X_train, y_train, X_test, K, ds);
+				acc(K, fold) = 100 * mean(y_pred == y_test);
+			end
+		end
+
+		acc_mean = mean(acc, 2);
+		acc_std = std(acc, 0, 2);
+		[ val idx ] = max(acc_mean);
+
+		acc_stat(i,1) = val;
+		acc_stat(i,2) = acc_std(idx);
 	end
+
+	bar(acc_stat(:,1), 'FaceColor', [ 0.5, 0.5, 0.5 ]);
+	set(gca, 'XtickLabel', { '0', '0.001', '0.01', '0.1', '1', '10', '100', '1000' });
+	xlabel('\eta');
+	ylabel('Recognition Accuracy');
+	title('10-fold Cross Validation Accuracy vs \eta');
+	hold on
+	errorbar(acc_stat(:,1), acc_stat(:,2), '.k');
+	hold off
+
+	outname = '../../results/knn_acc_rgb.png';
+	print(outname, '-dpng')
+else
+	acc = zeros(length(Ks), num_folds);
+
+	for K = 1:length(Ks)
+		for fold = 1:num_folds
+			fprintf('K=%d, fold=%d\n', Ks(K), fold);
+			train_id = trainfolds{fold};
+			test_id = testfolds{fold};
+
+			X_train = X(train_id, :);
+			y_train = y(train_id);
+			X_test = X(test_id, :);
+			y_test = y(test_id);
+			ds = dists(train_id, test_id);
+
+			y_pred = sol_knn_classify(X_train, y_train, X_test, K, ds);
+			acc(K, fold) = 100 * mean(y_pred == y_test);
+		end
+	end
+
+	% plot cross validation accuracy against K
+	errorbar(Ks, mean(acc, 2), std(acc, 0, 2), '-ok');
+	xlabel('K')
+	ylabel('Accuracy %')
+	title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
+
+	outname = '../../results/knn_acc.png';
+	print(outname, '-dpng')
+
+	[ val, idx ] = max(mean(acc, 2));
+	fprintf('Best accuracy is %0.1f%% when K=%d.\n', val, idx)
+
+	knn_test = val;
+	stdev = std(acc, 0, 2);
+	knn_test_std = stdev(idx);
 end
-
-% plot cross validation accuracy against K
-acc = 100 - err;
-errorbar(Ks, mean(acc, 2), std(acc, 0, 2), '-ok');
-xlabel('K')
-ylabel('Accuracy %')
-title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
-
-outname = '../../results/knn_acc.png';
-print(outname, '-dpng')
-
-[ val, idx ] = max(mean(acc, 2));
-fprintf('Best accuracy is %0.1f%% when K=%d.\n', val, idx)
-
-knn_test = val;
-stdev = std(acc, 0, 2);
-knn_test_std = stdev(idx);
 
 ws_fname = '../../results/knn_ws.mat';
 save(ws_fname);

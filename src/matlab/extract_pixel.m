@@ -51,8 +51,8 @@ fname = strcat(dname, fname(1:14), 'jpg');
 I = imread(fname);
 
 [ r_max c_max, ~ ] = size(I);
-r_min = 0;
-c_min = 0;
+r_min = 1;
+c_min = 1;
 
 for i = 1:length(names)
 %i = 266;

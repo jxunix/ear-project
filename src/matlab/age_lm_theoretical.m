@@ -4,7 +4,9 @@
 % Email: junx@cs.bu.edu
 % Created Time: Thu 14 Apr 2016 12:43:31 PM EDT
 % Description: This script is to compute the theoretical improvement of
-%   recognition rate if we adjust for the growth pattern.
+%   recognition rate if we adjust for the growth pattern. We model the
+%   growth pattern through linear regression, in particular, X_i|X_{i-1} ~
+%   Normal(A * X_{i-1} + b, \Sigma).
 %
 
 clear; close all; clc;
