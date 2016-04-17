@@ -46,16 +46,30 @@ names = names(~index);
 dname = '../../outputs/4_flipped/';
 rgbs = zeros(rows/2, cols*3);
 
+fname = names{1};
+fname = strcat(dname, fname(1:14), 'jpg');
+I = imread(fname);
+
+[ r_max c_max, ~ ] = size(I);
+r_min = 0;
+c_min = 0;
+
 for i = 1:length(names)
-%i = 1;
+%i = 266;
 	fname = names{i};
 	fname = strcat(dname, fname(1:14), 'jpg');
 	fprintf('Processing image %s\n', fname)
 
 	I = imread(fname);
-	r = M(2*i-1, :);
-	c = M(2*i, :);
-	pixels = impixel(I,r,c);
+	r = M(2*i, :);
+	c = M(2*i-1, :);
+
+	r = max(r, r_min);
+	r = min(r, r_max);
+	c = max(c, c_min);
+	c = min(c, c_max);
+
+	pixels = impixel(I,c,r);
 	rgbs(i,:) = pixels(:)';
 end
 
