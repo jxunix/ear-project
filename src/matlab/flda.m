@@ -7,7 +7,7 @@
 %		Discriminant Linear Analysis.
 %
 
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -104,7 +104,7 @@ ylabel('Accuracy %')
 title(sprintf('%d-fold Cross Validation Accuracy vs. Number of Eigenvectors', num_folds));
 hold off
 
-outname = '../../results/flda_acc.png';
+outname = '../../results/flda_acc_asm.png';
 print(outname, '-dpng')
 
 [ best_acc, best_idx ] = max(mean(train_acc, 2));
@@ -121,5 +121,5 @@ flda_test_std = test_std(best_idx);
 fprintf('Best training accuracy: %0.1g%%, by %d-D projection.\n', flda_train, best_idx);
 fprintf('The corresponding test accuracy: %0.1g%%.\n', flda_test);
 
-ws_fname = '../../results/flda_ws.mat';
+ws_fname = '../../results/flda_ws_asm.mat';
 save(ws_fname);

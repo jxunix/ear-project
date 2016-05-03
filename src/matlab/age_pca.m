@@ -7,7 +7,7 @@
 %
 
 clear; clc; close all;
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
 
 %% clean the predictor X and response y
 [ rows, cols ] = size(M);

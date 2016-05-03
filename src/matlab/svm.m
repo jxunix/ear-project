@@ -10,7 +10,7 @@
 % use libsvm package
 addpath(fullfile(pwd, 'libsvm'));
 
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -88,5 +88,5 @@ test_std = std(test_acc, 0, 2);
 svm_train_std = train_std(idx);
 svm_test_std = test_std(idx);
 
-ws_fname = '../../results/svm_ws.mat';
+ws_fname = '../../results/svm_ws_asm.mat';
 save(ws_fname);

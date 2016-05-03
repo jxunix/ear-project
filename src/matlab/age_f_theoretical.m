@@ -86,8 +86,8 @@ hold on
 plot(Ks, acc_ctrl, '--o', 'color', [ 0.5, 0.5, 0.5 ]);
 hold off
 xlabel('K')
-ylabel('Accuracy %')
-title('Accuracy vs. K');
+ylabel('Recognition rate %')
+%title('Accuracy vs. K');
 legend('Adjusted', 'Unadjusted');
 
 outname = '../../results/theoretical_improvement_adjusted2.png';
@@ -97,3 +97,4 @@ print(outname, '-dpng')
 fprintf('Best accuracy w/ correcting for growth is %0.1f%% when K=%d.\n', val, idx)
 [ val_ctrl, idx_ctrl ] = max(acc_ctrl);
 fprintf('Best accuracy w/o correcting for growth is %0.1f%% when K=%d.\n', val_ctrl, idx_ctrl)
+mean(acc_treat - acc_ctrl)

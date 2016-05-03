@@ -6,9 +6,11 @@
 % Description: This script is to classify the feature vectors by applying KNN.
 %
 
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+add_pixel = 0;
+
+load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
 if add_pixel
-	load('../../results/extract_pixel_ws.mat', 'rgbs');
+	load('../../results/extract_pixel_ws_asm.mat', 'rgbs');
 end
 
 % clean the predictor X and response y
@@ -79,14 +81,17 @@ if add_pixel
 	bar(acc_stat(:,1), 'FaceColor', [ 0.5, 0.5, 0.5 ]);
 	set(gca, 'XtickLabel', { '0', '0.001', '0.01', '0.1', '1', '10', '100', '1000' });
 	xlabel('\eta');
-	ylabel('Recognition Accuracy');
-	title('10-fold Cross Validation Accuracy vs \eta');
+	ylabel('Recognition rate %');
+	%title('10-fold Cross Validation Accuracy vs \eta');
 	hold on
 	errorbar(acc_stat(:,1), acc_stat(:,2), '.k');
 	hold off
 
-	outname = '../../results/knn_acc_rgb.png';
+	outname = '../../results/knn_acc_rgb_asm.png';
 	print(outname, '-dpng')
+    
+    ws_fname = '../../results/knn_ws_rgb_asm.mat';
+    save(ws_fname);
 else
 	acc = zeros(length(Ks), num_folds);
 
@@ -110,10 +115,10 @@ else
 	% plot cross validation accuracy against K
 	errorbar(Ks, mean(acc, 2), std(acc, 0, 2), '-ok');
 	xlabel('K')
-	ylabel('Accuracy %')
+	ylabel('Recognition rate %')
 	title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
 
-	outname = '../../results/knn_acc.png';
+	outname = '../../results/knn_acc_asm.png';
 	print(outname, '-dpng')
 
 	[ val, idx ] = max(mean(acc, 2));
@@ -122,7 +127,7 @@ else
 	knn_test = val;
 	stdev = std(acc, 0, 2);
 	knn_test_std = stdev(idx);
+    
+    ws_fname = '../../results/knn_ws_asm.mat';
+    save(ws_fname);
 end
-
-ws_fname = '../../results/knn_ws.mat';
-save(ws_fname);

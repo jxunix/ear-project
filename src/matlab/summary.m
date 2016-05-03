@@ -6,11 +6,11 @@
 % Description: This script summarize all the recognition rates.
 %
 
-%clear; close all; symmetry_test_asm
-%clear; close all; knn
-%clear; close all; flda
-%clear; close all; svm
-%clear; close all; svm_interface
+clear; close all; symmetry_test_asm
+clear; close all; knn
+clear; close all; flda
+clear; close all; svm
+clear; close all; svm_interface
 
 clear; close all;
 
@@ -105,7 +105,7 @@ ylabel('Recognition Rate %');
 title('Comparison of Feature Classification Methods');
 legend('KNN', 'FLDA', 'ASM (libsvm)', 'ASM (own)');
 
-outname = '../../results/classification_comparision.png';
+outname = '../../results/classification_comparision_asm.png';
 print(outname, '-dpng');
 
-save('../../results/summary_ws.mat');
+save('../../results/summary_ws_asm.mat');

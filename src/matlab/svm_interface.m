@@ -7,7 +7,7 @@
 %
 
 %% preprocessing
-load('../../results/symmetry_test_ws.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -81,31 +81,31 @@ end
 
 %% draw the bar plot
 test_errs = test_errs * 100;
-bar(mean(test_errs, 2), 'FaceColor', [ 0.5,0.5,0.5 ]);
+test_accs = 100 - test_errs;
+bar(mean(test_accs, 2), 'FaceColor', [ 0.5,0.5,0.5 ]);
 set(gca, 'XTickLabel', { '0', '10^-6', '10^-5', '10^-4', '10^-3', '10^-2', '10^-1', '1', '10', '10^2' })
 xlabel('\lambda')
-ylabel('Test Error %')
-title('10-fold Cross Validation Error vs \lambda')
+ylabel('Recognition rate %')
+%title('10-fold Cross Validation Error vs \lambda')
 hold on
-errorbar(mean(test_errs, 2), std(test_errs, 0, 2), '.k');
+errorbar(mean(test_accs, 2), std(test_accs, 0, 2), '.k');
 hold off
 
 outname = '../../results/svm_penalized_error.png';
 print(outname, '-dpng')
 
-train_acc = (1 - train_errs) * 100;
-test_acc = 100 - test_errs;
+train_accs = (1 - train_errs) * 100;
 
-[ val, idx ] = max(mean(train_acc, 2));
-mean_test_acc = mean(test_acc, 2);
+[ val, idx ] = max(mean(train_accs, 2));
+mean_test_acc = mean(test_accs, 2);
 
 svm_train = val;
 svm_test = mean_test_acc(idx);
 
-train_std = std(train_acc, 0, 2);
-test_std = std(test_acc, 0, 2);
+train_std = std(train_accs, 0, 2);
+test_std = std(test_accs, 0, 2);
 svm_train_std = train_std(idx);
 svm_test_std = test_std(idx);
 
-ws_fname = '../../results/svm_own_ws.mat';
+ws_fname = '../../results/svm_own_ws_asm.mat';
 save(ws_fname);

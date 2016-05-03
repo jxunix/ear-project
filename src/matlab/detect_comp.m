@@ -13,8 +13,9 @@ M = csvread(fname, 1, 1);
 
 bar(mean(M), 'FaceColor', [ 0.5,0.5,0.5 ]);
 set(gca, 'XTickLabel', {'ASM', 'GTM'})
-ylabel('IOU')
-title('Comparison of Ear Detection Methods')
+xlim([ 0.4 2.6 ])
+ylabel('IoU')
+%title('Comparison of Ear Detection Methods')
 hold on
 errorbar(mean(M), std(M), '.k');
 hold off
