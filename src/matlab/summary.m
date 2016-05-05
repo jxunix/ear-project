@@ -14,28 +14,28 @@ clear; close all; svm_interface
 
 clear; close all;
 
-fname = '../../results/knn_ws_asm.mat';
+fname = '../../results/knn_ws_manual.mat';
 variables = { 'acc' };
 ws = load(fname, variables{:});
 knn_test_acc = ws.('acc');
 
-fname = '../../results/flda_ws_asm.mat';
+fname = '../../results/flda_ws_manual.mat';
 variables = { 'train_acc', 'test_acc' };
 ws = load(fname, variables{:});
 flda_train_acc = ws.('train_acc');
 flda_test_acc = ws.('test_acc');
 
-fname = '../../results/svm_ws_asm.mat';
+fname = '../../results/svm_ws_manual.mat';
 variables = { 'train_acc', 'test_acc' };
 ws = load(fname, variables{:});
 svm_train_acc = ws.('train_acc');
 svm_test_acc = ws.('test_acc');
 
-fname = '../../results/svm_own_ws_asm.mat';
-variables = { 'train_acc', 'test_acc' };
+fname = '../../results/svm_own_ws_manual.mat';
+variables = { 'train_accs', 'test_accs' };
 ws = load(fname, variables{:});
-svm_own_train_acc = ws.('train_acc');
-svm_own_test_acc = ws.('test_acc');
+svm_own_train_acc = ws.('train_accs');
+svm_own_test_acc = ws.('test_accs');
 
 clear fname variables ws;
 
@@ -105,7 +105,7 @@ ylabel('Recognition Rate %');
 title('Comparison of Feature Classification Methods');
 legend('KNN', 'FLDA', 'ASM (libsvm)', 'ASM (own)');
 
-outname = '../../results/classification_comparision_asm.png';
+outname = '../../results/classification_comparision_manual.png';
 print(outname, '-dpng');
 
-save('../../results/summary_ws_asm.mat');
+save('../../results/summary_ws_manual.mat');

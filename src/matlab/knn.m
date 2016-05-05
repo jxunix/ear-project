@@ -8,9 +8,9 @@
 
 add_pixel = 0;
 
-load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_manual.mat', 'M', 'names');
 if add_pixel
-	load('../../results/extract_pixel_ws_asm.mat', 'rgbs');
+	load('../../results/extract_pixel_ws_manual.mat', 'rgbs');
 end
 
 % clean the predictor X and response y
@@ -87,10 +87,10 @@ if add_pixel
 	errorbar(acc_stat(:,1), acc_stat(:,2), '.k');
 	hold off
 
-	outname = '../../results/knn_acc_rgb_asm.png';
+	outname = '../../results/knn_acc_rgb_manual.png';
 	print(outname, '-dpng')
     
-    ws_fname = '../../results/knn_ws_rgb_asm.mat';
+    ws_fname = '../../results/knn_ws_rgb_manual.mat';
     save(ws_fname);
 else
 	acc = zeros(length(Ks), num_folds);
@@ -118,7 +118,7 @@ else
 	ylabel('Recognition rate %')
 	title(sprintf('%d-fold Cross Validation Accuracy vs. K', num_folds));
 
-	outname = '../../results/knn_acc_asm.png';
+	outname = '../../results/knn_acc_manual.png';
 	print(outname, '-dpng')
 
 	[ val, idx ] = max(mean(acc, 2));
@@ -128,6 +128,6 @@ else
 	stdev = std(acc, 0, 2);
 	knn_test_std = stdev(idx);
     
-    ws_fname = '../../results/knn_ws_asm.mat';
+    ws_fname = '../../results/knn_ws_manual.mat';
     save(ws_fname);
 end

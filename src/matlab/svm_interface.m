@@ -7,7 +7,7 @@
 %
 
 %% preprocessing
-load('../../results/symmetry_test_ws_asm.mat', 'M', 'names');
+load('../../results/symmetry_test_ws_manual.mat', 'M', 'names');
 
 % clean the predictor X and response y
 [ rows, cols ] = size(M);
@@ -91,7 +91,7 @@ hold on
 errorbar(mean(test_accs, 2), std(test_accs, 0, 2), '.k');
 hold off
 
-outname = '../../results/svm_penalized_error.png';
+outname = '../../results/svm_penalized_error_manual.png';
 print(outname, '-dpng')
 
 train_accs = (1 - train_errs) * 100;
@@ -107,5 +107,5 @@ test_std = std(test_accs, 0, 2);
 svm_train_std = train_std(idx);
 svm_test_std = test_std(idx);
 
-ws_fname = '../../results/svm_own_ws_asm.mat';
+ws_fname = '../../results/svm_own_ws_manual.mat';
 save(ws_fname);

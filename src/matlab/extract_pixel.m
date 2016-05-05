@@ -14,7 +14,7 @@ names = textread(fname, '%s', 'delimiter', '\n');
 
 %% read the coordinates of the feature points and remove missing data (whose
 %  corresponding filename contains '(remedy)'.
-fname = '../../results/features_asm.csv';
+fname = '../../results/features_manual.csv';
 %fname = '../../results/features_manual.csv';
 M = csvread(fname);
 
@@ -73,5 +73,5 @@ for i = 1:length(names)
 	rgbs(i,:) = pixels(:)';
 end
 
-ws_fname = '../../results/extract_pixel_ws_asm.mat';
+ws_fname = '../../results/extract_pixel_ws_manual.mat';
 save(ws_fname);

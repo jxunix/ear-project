@@ -12,8 +12,8 @@ names = textread(fname, '%s', 'delimiter', '\n');
 
 %% read the coordinates of the feature points and remove missing data (whose
 %  corresponding filename contains '(remedy)'.
-fname = '../../results/features_asm.csv';
-%fname = '../../results/features_manual.csv';
+%fname = '../../results/features_asm.csv';
+fname = '../../results/features_manual.csv';
 M = csvread(fname);
 
 rows = size(M,1);
@@ -124,7 +124,7 @@ if a >= 0
 end
 hold off
 
-outname = '../../results/symmetry_test_same_visit_asm.png';
+outname = '../../results/symmetry_test_same_visit_manual.png';
 print(outname, '-dpng')
 
 %% clean the data for test for ear symmetry for the same newborn
@@ -201,8 +201,8 @@ if a >= 0
 end
 hold off
 
-outname = '../../results/symmetry_test_next_visit_asm.png';
+outname = '../../results/symmetry_test_next_visit_manual.png';
 print(outname, '-dpng')
 
-ws_fname = '../../results/symmetry_test_ws_asm.mat';
+ws_fname = '../../results/symmetry_test_ws_manual.mat';
 save(ws_fname);
