@@ -124,8 +124,8 @@ if a >= 0
 end
 hold off
 
-outname = '../../results/symmetry_test_same_visit_asm.png';
-print(outname, '-dpng')
+%outname = '../../results/symmetry_test_same_visit_asm.png';
+%print(outname, '-dpng')
 
 %% clean the data for test for ear symmetry for the same newborn
 %  between two consecutive visits.
@@ -201,8 +201,8 @@ if a >= 0
 end
 hold off
 
-outname = '../../results/symmetry_test_next_visit_asm.png';
-print(outname, '-dpng')
+%outname = '../../results/symmetry_test_next_visit_asm.png';
+%print(outname, '-dpng')
 
-ws_fname = '../../results/symmetry_test_ws_asm.mat';
-save(ws_fname);
+%ws_fname = '../../results/symmetry_test_ws_asm.mat';
+%save(ws_fname);
