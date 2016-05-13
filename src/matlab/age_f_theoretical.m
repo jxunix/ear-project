@@ -56,11 +56,11 @@ y_test_pred = X_test * omega;
 
 %% machine learning model 2
 %  to classify the ear shape and find newborns' ID
-X_train_treat = [ X1; X2; y_test_pred ];
-y_train_treat = [ class(X1_idx); class(X2_idx); class(X2_idx) ];
+X_train_treat = [ X1_upto2; X2; y_test_pred ];
+y_train_treat = [ class(X2_idx); class(X2_idx); class(X2_idx) ];
 
-X_train_ctrl = [ X1; X2 ];
-y_train_ctrl = [ class(X1_idx); class(X2_idx) ];
+X_train_ctrl = [ X1_upto2; X2 ];
+y_train_ctrl = [ class(X2_idx); class(X2_idx) ];
 
 X_test = X3;
 y_test = class(X3_idx);
@@ -68,7 +68,7 @@ y_test = class(X3_idx);
 d_treat = pdist2(X_train_treat, X_test);
 d_ctrl = pdist2(X_train_ctrl, X_test);
 
-Ks = 1:5:size(X_train_ctrl, 1) / 2;
+Ks = 1:15;
 acc_treat = zeros(length(Ks), 1);
 acc_ctrl = zeros(length(Ks), 1);
 
@@ -84,12 +84,15 @@ end
 plot(Ks, acc_treat, '-ok');
 hold on
 plot(Ks, acc_ctrl, '--o', 'color', [ 0.5, 0.5, 0.5 ]);
+plot(xlim, [ 1/31 1/31 ], '--k')
 hold off
 xlabel('K')
 ylabel('Recognition rate %')
+ylim([0 100])
 %title('Accuracy vs. K');
 legend('Adjusted', 'Unadjusted');
 
+%%
 outname = '../../results/theoretical_improvement_adjusted2.png';
 print(outname, '-dpng')
 

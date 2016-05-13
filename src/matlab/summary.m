@@ -6,32 +6,32 @@
 % Description: This script summarize all the recognition rates.
 %
 
-clear; close all; symmetry_test_asm
-clear; close all; knn
-clear; close all; flda
-clear; close all; svm
-clear; close all; svm_interface
+%clear; close all; symmetry_test_asm
+%clear; close all; knn
+%clear; close all; flda
+%clear; close all; svm
+%clear; close all; svm_interface
 
 clear; close all;
 
-fname = '../../results/knn_ws_manual.mat';
+fname = '../../results/knn_ws_asm.mat';
 variables = { 'acc' };
 ws = load(fname, variables{:});
 knn_test_acc = ws.('acc');
 
-fname = '../../results/flda_ws_manual.mat';
+fname = '../../results/flda_ws_asm.mat';
 variables = { 'train_acc', 'test_acc' };
 ws = load(fname, variables{:});
 flda_train_acc = ws.('train_acc');
 flda_test_acc = ws.('test_acc');
 
-fname = '../../results/svm_ws_manual.mat';
+fname = '../../results/svm_ws_asm.mat';
 variables = { 'train_acc', 'test_acc' };
 ws = load(fname, variables{:});
 svm_train_acc = ws.('train_acc');
 svm_test_acc = ws.('test_acc');
 
-fname = '../../results/svm_own_ws_manual.mat';
+fname = '../../results/svm_own_ws_asm.mat';
 variables = { 'train_accs', 'test_accs' };
 ws = load(fname, variables{:});
 svm_own_train_acc = ws.('train_accs');
@@ -97,6 +97,7 @@ test_std = [ knn_test_std flda_test_std svm_test_std svm_own_test_std ];
 means = [ train; test ];
 stds = [ train_std; test_std ];
 
+%%
 errorbar_groups(means', stds', ...
 	'bar_width', 0.75, ...
 	'errorbar_width', 0.5, ...
